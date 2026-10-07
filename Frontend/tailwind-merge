@@ -1,0 +1,25 @@
+// Simple tailwind-merge implementation
+function twMerge(...inputs) {
+  const classes = inputs.filter(Boolean).join(' ').split(' ')
+  const seen = new Set()
+  
+  return classes
+    .filter(cls => {
+      // Remove conflicting classes (simple version)
+      if (seen.has(cls)) return false
+      
+      // Check for conflicts
+      const base = cls.replace(/-\d+$/, '')
+      if (seen.has(base)) {
+        seen.delete(base)
+        seen.add(cls)
+        return true
+      }
+      
+      seen.add(cls)
+      return true
+    })
+    .join(' ')
+}
+
+export default twMerge
